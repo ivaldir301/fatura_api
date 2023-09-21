@@ -1,7 +1,6 @@
 from database.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 from database.queries.queryCliente import queryCliente
 
-
 queryClientTest = queryCliente("000189f4-f5b1-a5c0-65b4-90b1b4b0kld4")
 
 def test_query_select_with_id():

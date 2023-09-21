@@ -46,9 +46,8 @@ class queryCliente:
         self.__glb_user_id = glb_user_id
         self.__entidade_id = entidade_id
     
-        # INSERT INTO `cliente`(`ID`, `FOTO_PERFIL`, `CODIGO`, `IND_COLETIVO`, `DESIG`, `DESCR`, `NIF`, `NUM_CLIENTE`, `EMAIL`, `TELEFONE`, `GEOGRAFIA_ID`, `COORDENADAS`, `ENDERECO`, `DT_REGISTO`, `DT_ALTERACAO`, `ESTADO`, `PESSOA`, `PESSOA_CONTACTO`, `IS_CLIETE_VALIDADO`, `pr_enquadramento_ID`, `glb_user_ID`, `Entidade_ID`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}',  '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');
 
-    def insert_new_client_in_database(self):
+    def insert_new_client_in_database(self) -> str:
         return """
                 INSERT INTO `cliente`(`ID`,
                     `FOTO_PERFIL`,
@@ -114,7 +113,7 @@ class queryCliente:
                             self.__entidade_id,
                             self.__id)
 
-    def get_all_clients_in_database(self) -> None:
+    def get_all_clients_in_database(self) -> str:
         return "SELECT * FROM cliente;"
     
     def get_client_with_id(self):
@@ -122,7 +121,7 @@ class queryCliente:
                 SELECT * FROM cliente WHERE id = '{}';
             """.format(self.__id)
     
-    def update_client_with_id(self):
+    def update_client_with_id(self) -> str:
         return """
                 UPDATE cliente SET 
                     `FOTO_PERFIL`='{}',
@@ -168,5 +167,5 @@ class queryCliente:
                        self.__entidade_id,
                        self.__id)
     
-    def delete_client_with_id(self):
+    def delete_client_with_id(self) -> str:
         return "DELETE FROM cliente WHERE ID = '{}'".format(self.__id)

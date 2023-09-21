@@ -2,10 +2,6 @@ from database.configuration.databaseConfigurationAndQuery import DatabaseConnect
 from models.cliente import Cliente
 from database.queries.queryCliente import queryCliente
 
-
-def generateNewClientId():
-    return "id"
-
 newClient = Cliente(
    '000189f4-f5b1-a5c0-65b4-90b1b4b0md56',
     'opentec-logo.png',

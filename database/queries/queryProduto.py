@@ -40,7 +40,7 @@ class queryProduto:
         self.__desconto_comercial = desconto_comercial
         self.__foto_perfil = foto_perfil
 
-    def insert_new_product_in_database(self):
+    def insert_new_product_in_database(self) -> str:
         return """
                 INSERT INTO `produto`(`ID`,
                       `CODIGO`,

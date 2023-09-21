@@ -2,9 +2,6 @@ import mysql.connector
 from mysql.connector import Error
 
 class DatabaseConnectorAndQuery:
-    database_connection = None
-    cursor = None
-    
     def __init__(self, host_name: str, database_name: str, user: str, password:str, query:str, queryType: int) -> None:
         self.__host_name = host_name
         self.__user = user
@@ -12,10 +9,6 @@ class DatabaseConnectorAndQuery:
         self.__database_name = database_name
         self.__query = query
         self.__queryType = queryType
-        
-    def printTest(self):
-        print("dkfadlksfja")
-        print(self.__query)
 
     def connect_to_database(self):
         try:
@@ -42,11 +35,9 @@ class DatabaseConnectorAndQuery:
                 cursor.execute(self.__query)
                 result = cursor.fetchall()
             elif self.__queryType == 2:
-                print(self.__query)
                 cursor.execute(self.__query)
                 result = cursor.fetchone()
             elif self.__queryType == 3:
-                print(self.__query)
                 cursor.execute(self.__query)
                 return "Data updated sucessfully"
             elif self.__queryType == 4:

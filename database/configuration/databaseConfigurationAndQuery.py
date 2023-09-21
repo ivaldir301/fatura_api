@@ -37,24 +37,21 @@ class DatabaseConnectorAndQuery:
             
             if self.__queryType == 0:
                 cursor.execute(self.__query)
-                #database_connection.commit()
-                return "Query excuted sucessfully, data inserted in database"
+                return "Data inserted sucessfully"
             elif self.__queryType == 1:
                 cursor.execute(self.__query)
                 result = cursor.fetchall()
             elif self.__queryType == 2:
+                print(self.__query)
                 cursor.execute(self.__query)
                 result = cursor.fetchone()
-                print("Data returned")
             elif self.__queryType == 3:
+                print(self.__query)
                 cursor.execute(self.__query)
-                database_connection.commit()
-                print("dsfasdf")
                 return "Data updated sucessfully"
             elif self.__queryType == 4:
                 cursor.execute(self.__query)
-                result = cursor.fetchall()
-                print("Data deleted sucessfully")
+                return "Data deleted sucessfully"
                        
             cursor.close()
             database_connection.close()

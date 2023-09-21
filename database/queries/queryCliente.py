@@ -90,8 +90,8 @@ class queryCliente:
                     '{}',
                     '{}',
                     '{}',
-                    '{}')
-                    ;""".format(self.__id,
+                    '{}');
+                    """.format(
                             self.__foto_perfil,
                             self.__codigo,
                             self.__ind_coletivo,
@@ -111,7 +111,8 @@ class queryCliente:
                             self.__is_cliente_validado,
                             self.__pr_enquadramento_id,
                             self.__glb_user_id,
-                            self.__entidade_id)
+                            self.__entidade_id,
+                            self.__id)
 
     def get_all_clients_in_database(self) -> None:
         return "SELECT * FROM cliente;"
@@ -135,6 +136,7 @@ class queryCliente:
                     `TELEFONE`='{}',
                     `GEOGRAFIA_ID`='{}',
                     `COORDENADAS`='{}',
+                    `ENDERECO`='{}',
                     `DT_REGISTO`='{}',
                     `DT_ALTERACAO`='{}',
                     `ESTADO`='{}',
@@ -155,6 +157,7 @@ class queryCliente:
                        self.__telefone,
                        self.__geografia_id,
                        self.__coordenadas,
+                       self.__endereco,
                        self.__dt_registro,
                        self.__dt_alteracao,
                        self.__estado,

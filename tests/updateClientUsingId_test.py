@@ -2,14 +2,13 @@ from database.configuration.databaseConfigurationAndQuery import DatabaseConnect
 from database.queries.queryCliente import queryCliente
 from models.cliente import Cliente
 
-def generateNewClientId():
-    return "id"
 
 newClient = Cliente(
+    '000189f4-f5b1-a5c0-65b4-90b1b4b0ffd4',
     'opentec-logo.png',
     '1969',
     'S',
-    'Ivaldir Batalha update funciona',
+    'Ivaldir Santos Lopes Batalha update fine',
     'Ivaldir',
     '130042552',
     '',
@@ -17,15 +16,15 @@ newClient = Cliente(
     '2385925264',
     'CV774741741037410303',
     '',
-    '2023-09-19 11:44:20',
+    'Zona Ponta',
+    '2023-08-19 11:44:20',
     '2023-09-20 11:44:10',
     'A',
     'teste',
     '',
     '567ED7F5-8F21-4467-AF3C-D25230233421',
     '1fd8fc20-d611-11e8-a359-a0d3c1588c38',
-    'A56CA66F-54DB-4953-88FE-47C8C7D653B3',
-    '000189f4-f5b1-a5c0-65b4-90b1b4b0ffd4')
+    'A56CA66F-54DB-4953-88FE-47C8C7D653B3')
 
 
 queryClientTest = queryCliente(
@@ -41,6 +40,7 @@ queryClientTest = queryCliente(
     newClient.telefone,
     newClient.geografia_id,
     newClient.coordenadas,
+    newClient.endereco,
     newClient.dt_registro,
     newClient.dt_alteracao,
     newClient.estado,
@@ -60,7 +60,6 @@ def test_query_update_client():
                 queryClientTest.update_client_with_id(),
                 3
     )
-    
     
     dbQueryResults = mysqlDBTest.connect_to_database()
     assert dbQueryResults == "Data updated sucessfully"

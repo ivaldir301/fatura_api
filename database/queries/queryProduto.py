@@ -3,11 +3,9 @@ class queryProduto:
                  id: str = None,
                  codigo: str = None,
                  designacao: str = None,
-                 descricao: str = None,
                  produto_servico: str = None,
                  vendivel: str = None,
                  compravel: str = None,
-                 codigo_barra: str = None,
                  preco_custo: str = None,
                  preco_venda: str = None,
                  pr_categoria_id: str = None,
@@ -16,8 +14,6 @@ class queryProduto:
                  pr_iva_id: str = None,
                  pr_iva_compra_id: str = None,
                  pr_unidade_id: str = None,
-                 rfid: str = None,
-                 pos: str = None,
                  data_registro: str = None,
                  data_alteracao: str = None,
                  estado: str = None,
@@ -27,11 +23,9 @@ class queryProduto:
         self.__id = id
         self.__codigo = codigo
         self.__designacao = designacao
-        self.__descricao = descricao
         self.__produto_servico = produto_servico
         self.__vendivel = vendivel
         self.__compravel = compravel
-        self.__codigo_barra = codigo_barra
         self.__preco_custo = preco_custo
         self.__preco_venda = preco_venda
         self.__pr_categoria_id = pr_categoria_id
@@ -40,8 +34,6 @@ class queryProduto:
         self.__pr_iva_id = pr_iva_id
         self.__pr_iva_compra_id = pr_iva_compra_id
         self.__pr_unidade_id = pr_unidade_id
-        self.__rfid = rfid,
-        self.__pos = pos
         self.__data_registro = data_registro
         self.__data_alteracao = data_alteracao
         self.__estado = estado
@@ -53,11 +45,9 @@ class queryProduto:
                 INSERT INTO `produto`(`ID`,
                       `CODIGO`,
                       `DESIG`,
-                      `DESCR`,
                       `Produto_servico`,
                       `Vendivel`,
                       `Compravel`,
-                      `Codigo_barra`,
                       `Preco_custo`,
                       `Preco_venda`,
                       `pr_categoria_ID`,
@@ -66,8 +56,6 @@ class queryProduto:
                       `pr_iva_ID`,
                       `PR_IVA_COMPRA_ID`,
                       `pr_unidade_ID`,
-                      `Rfid`,
-                      `Pos`,
                       `DT_REGISTO`,
                       `DT_ALTERACAO`,
                       `ESTADO`,
@@ -78,14 +66,10 @@ class queryProduto:
                                              '{}',
                                              '{}',
                                              '{}',
-                                             '{}',
-                                             '{}',
-                                             {}, 		   
+                                             {},
                                              {},
                                              '{}',
-                                             '{}',
-                                             '{}',
-                                             '{}',
+                                             '{}', 		   
                                              '{}',
                                              '{}',
                                              '{}',
@@ -94,25 +78,42 @@ class queryProduto:
                                              '{}',
                                              '{}',
                                              {},
-                                             '{}')
-            """.format()
+                                             '{}');
+            """.format(
+                self.__id,
+                self.__codigo,
+                self.__designacao,
+                self.__produto_servico,
+                self.__vendivel,
+                self.__compravel,
+                self.__preco_custo,
+                self.__preco_venda,
+                self.__pr_categoria_id,
+                self.__entidade_id,
+                self.__glb_user_id,
+                self.__pr_iva_id,
+                self.__pr_iva_compra_id,
+                self.__pr_unidade_id,
+                self.__data_registro,
+                self.__data_alteracao,
+                self.__estado,
+                self.__desconto_comercial,
+                self.__foto_perfil)
 
     def get_all_products_in_database(self) -> str:
         return "SELECT * FROM produto;"
     
     def get_product_with_id(self) -> str:
-        return "SELECT * FROM produto WHERE id = {};".format(self.__id)
+        return "SELECT * FROM produto WHERE ID = '{}';".format(self.__id)
     
     def update_product_with_id(self) -> str:
         return """
                 UPDATE `produto` SET 
                     `CODIGO`='{}',
                     `DESIG`='{}',
-                    `DESCR`='{}',
                     `Produto_servico`='{}',
                     `Vendivel`='{}',
                     `Compravel`='{}',
-                    `Codigo_barra`='{}',
                     `Preco_custo`= {},
                     `Preco_venda`= {},
                     `pr_categoria_ID`='{}',
@@ -121,21 +122,17 @@ class queryProduto:
                     `pr_iva_ID`='{}',
                     `PR_IVA_COMPRA_ID`='{}',
                     `pr_unidade_ID`='{}',
-                    `Rfid`='{}',
-                    `Pos`='{}',
                     `DT_REGISTO`='{}',
                     `DT_ALTERACAO`='{}',
                     `ESTADO`='{}',
                     `DESCONTO_COMERCIAL`= {},
                     `FOTO_PERFIL`='{}'
-                WHERE ID = '';""".format(
+                WHERE ID = '{}';""".format(
                                         self.__codigo,
                                         self.__designacao,
-                                        self.__descricao,
                                         self.__produto_servico,
                                         self.__vendivel,
                                         self.__compravel,
-                                        self.__codigo_barra,
                                         self.__preco_custo,
                                         self.__preco_venda, 
                                         self.__pr_categoria_id,
@@ -144,8 +141,6 @@ class queryProduto:
                                         self.__pr_iva_id,
                                         self.__pr_iva_compra_id,
                                         self.__pr_unidade_id,
-                                        self.__rfid,
-                                        self.__pos,
                                         self.__data_registro,
                                         self.__data_alteracao,
                                         self.__estado,

@@ -1,11 +1,10 @@
-from database.queries import queryCliente, queryProduto
+from database.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
+from database.queries.queryCliente import queryCliente
+from database.queries.queryProduto import queryProduto
 from models import cliente, produto
-from database import setupDatabaseAndQuery
 from fastapi import FastAPI
 
-
 app = FastAPI()
-
 
 @app.get("/")
 def hello_world() -> None:

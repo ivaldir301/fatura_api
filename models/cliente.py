@@ -16,7 +16,6 @@ class Cliente:
                   dt_registro = None,
                   dt_alteracao = None,
                   estado: str = None,
-                  pessoa: str = None,
                   pessoa_contacto: int = None,
                   is_cliente_validado: bool = None,
                   pr_enquadramento_id: str = None,
@@ -39,7 +38,6 @@ class Cliente:
         self.dt_registro = dt_registro
         self.dt_alteracao = dt_alteracao
         self.estado = estado
-        self.pessoa = pessoa
         self.pessoa_contacto = pessoa_contacto
         self.is_cliente_validado = is_cliente_validado
         self.pr_enquadramento_id = pr_enquadramento_id

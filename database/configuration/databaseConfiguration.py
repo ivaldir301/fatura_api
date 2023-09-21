@@ -22,15 +22,25 @@ class DatabaseConnectorAndQuery:
                 database_specific_info = database_connection.get_server_info()
                 print("Connected to MySQL server version ", database_specific_info)
                 cursor = database_connection.cursor()
+                print(self.__query)
+                
                 cursor.execute(self.__query)
-                record = cursor.fetchall()
-                print("You are connected to the database \n", record)
-                return record
-
-                # now closing database connection
+                #database_connection.commit()
+                
+                cursor.fetchall() 
+                print("here")
                 cursor.close()
                 database_connection.close()
                 print("Connection to database was closed!")
+                record = cursor.fetchall
+                
+                print("You are connected to the database \n", record)
+                
+                if record is None:
+                    return 
+                else:
+                    return record
+
 
         except Error as DatabaseConnectionError:
             print("There's was a problem when connectin to the database", DatabaseConnectionError)

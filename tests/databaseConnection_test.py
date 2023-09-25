@@ -1,4 +1,4 @@
-from database.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
+from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 
 def test_database_connection():
         query = "SELECT * FROM cliente WHERE ID = '000189f4-f5b1-a5c0-65b4-90b1b4b0kld4';"

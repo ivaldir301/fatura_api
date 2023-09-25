@@ -232,7 +232,10 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
                                     faturaVenda.data_venda,
                                     faturaVenda.condicao_pagamento,
                                     faturaVenda.cliente_id,
-                                    faturaVenda.produtos
+                                    faturaVenda.produtos,
+                                    faturaVenda.requisicao,
+                                    faturaVenda.desconto_financeiro,
+                                    faturaVenda.nota
                                 )
                      
     headers = {

@@ -1,11 +1,27 @@
-def get_codigo_int_auto(model, length):
-    # Consulta o valor máximo de CODIGO no modelo e ordena em ordem decrescente
-    queryMaiorCodigoNaBaseDeDados = ""
+import sys
+ 
+sys.path.insert(1, '/Users/ivaldir/Desktop/coding/ApiFaturacao')
 
-    if not queryMaiorCodigoNaBaseDeDados:
-        resultado = 1
-    else:
-        resultado = 0
+from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 
-    # Retorna o resultado formatado com zeros à esquerda
-    return str(resultado + 1).zfill(length)
+
+def check_if_new_codigo_exists_and_generate_new() -> str:
+    queryMaiorCodigoNaBaseDeDados = "SELECT (CODIGO) FROM `produto` ORDER BY CODIGO DESC LIMIT 5000;"
+        
+    mysqlDBTest = DatabaseConnectorAndQuery(
+                '127.0.0.1',
+                'faturacao',
+                'root',
+                '',
+                queryMaiorCodigoNaBaseDeDados,
+                1
+    )
+    
+    result = mysqlDBTest.connect_to_database()
+    
+    # print(result[0])
+       
+    sanitazedResult = (((((str(result[0]).replace('(', '', 1))).replace(')', '', 1)).replace(',', '', 1)).replace("'", '', 2))
+    return str(int(sanitazedResult) + 1).zfill(5) 
+
+# print(check_if_new_codigo_exists_and_generate_new())

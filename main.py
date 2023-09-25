@@ -7,6 +7,7 @@ from models.venda.faturaVenda import FaturaVenda
 import http.client
 from fastapi import FastAPI
 from fastapi import Body
+import json
 
 app = FastAPI()
 
@@ -223,21 +224,29 @@ def delete_product_with_id(id: str):
 @app.post("/faturavenda")
 def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
     conn = http.client.HTTPSConnection("fatura.opentec.cv")
-    payload = """serie_id={}
-                 data_venda={}
-                 condicoes_pagamento={}
-                 cliente_id={}
-                 produtos={}""".format(
+    
+    # transform produtos array into json objects
+    
+    jsonObjectsProducts = []
+    
+    for product in faturaVenda.produtos:
+        jsonObjectsProducts.append(json.dumps(product))
+        
+    payload = """serie_id:{}
+                 data_venda:{}
+                 condicoes_pagamento:{}
+                 cliente_id:{}
+                 produtos:{}""".format(
                                     faturaVenda.serie_id,
                                     faturaVenda.data_venda,
                                     faturaVenda.condicao_pagamento,
                                     faturaVenda.cliente_id,
-                                    faturaVenda.produtos,
+                                    jsonObjectsProducts,
                                     faturaVenda.requisicao,
                                     faturaVenda.desconto_financeiro,
                                     faturaVenda.nota
                                 )
-                     
+                                      
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Cookie': '_csrf=ac410cbb999a9149a88e8b1f8e76fa45d2b12cb8d865ba3d822d54de6d800b9ba%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22rSDvz6Gq7hxMWmfIX23oruyQvEuQrHnS%22%3B%7D; app-opentec-lab=j6tlei98du7fbtc7siaukhn84r'
@@ -245,6 +254,6 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
     
     print(payload)
     conn.request("POST", "/web/index.php?r=remote-venda/create", payload, headers)
-    res = conn.getresponse()
-    data = res.read()
-    print(data.decode("utf-8"))
+    # res = conn.getresponse()
+    # data = res.read()
+    # print(data.decode("utf-8"))

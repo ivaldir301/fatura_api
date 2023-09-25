@@ -1,20 +1,18 @@
-from database.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
-from database.queries.queryCliente import queryCliente
-from database.queries.queryProduto import queryProduto
+from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
+from repository.queries.queryCliente import queryCliente
+from repository.queries.queryProduto import queryProduto
 from models.cliente import Cliente2
 from models.produto import Produto2
-from fastapi import FastAPI, Body
+from models.venda.faturaVenda import FaturaVenda
+import http.client
+from fastapi import FastAPI
+from fastapi import Body
 
 app = FastAPI()
 
 @app.get("/{name}")
 def hello_world(name: str) -> None:
     return {"Hello my first FastAPI api, the name is {}".format(name)} 
-
-
-@app.get("v1/cliente/{id}")
-def get_cliente_with_id(id: str):
-    return "cliente com id"
 
 
 @app.post("/cliente", status_code=201)
@@ -221,3 +219,29 @@ def delete_product_with_id(id: str):
         return "delete sucessfull"
     else:
         return "there was an error"
+
+@app.post("/faturavenda")
+def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
+    conn = http.client.HTTPSConnection("fatura.opentec.cv")
+    payload = """serie_id={}
+                 data_venda={}
+                 condicoes_pagamento={}
+                 cliente_id={}
+                 produtos={}""".format(
+                                    faturaVenda.serie_id,
+                                    faturaVenda.data_venda,
+                                    faturaVenda.condicao_pagamento,
+                                    faturaVenda.cliente_id,
+                                    faturaVenda.produtos
+                                )
+                     
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cookie': '_csrf=ac410cbb999a9149a88e8b1f8e76fa45d2b12cb8d865ba3d822d54de6d800b9ba%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22rSDvz6Gq7hxMWmfIX23oruyQvEuQrHnS%22%3B%7D; app-opentec-lab=j6tlei98du7fbtc7siaukhn84r'
+    }
+    
+    print(payload)
+    conn.request("POST", "/web/index.php?r=remote-venda/create", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode("utf-8"))

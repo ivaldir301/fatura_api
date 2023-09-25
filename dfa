@@ -1,0 +1,47 @@
+
+{
+        "id": "000189f4-f5b1-a5c0-65b4-90b1b4b0md56", 
+        "foto_perfil": "opentec-logo.png", 
+        "codigo": "5969", 
+        "ind_coletivo": "S", 
+        "designacao": "Ivaldir updated endpoint Batalha",
+        "descricao": "Ivaldir", 
+        "nif": "130042552", 
+        "numero_cliente": "",
+        "email": "ivalbat1@gmail.com", 
+        "telefone": "2385925264",
+        "geografia_id": "CV774741741037410303",
+        "coordenadas": "",
+        "endereco": "Madeira",
+        "dt_registro": "2023-09-19 11:44:10",
+        "dt_alteracao": "2023-09-20 11:44:10",
+        "estado": "A",
+        "pessoa_contacto": "Teste",
+        "is_cliente_validado": "",
+        "pr_enquadramento_id": "567ED7F5-8F21-4467-AF3C-D25230233421",
+        "glb_user_id": "1fd8fc20-d611-11e8-a359-a0d3c1588c38",
+        "entidade_id": "A56CA66F-54DB-4953-88FE-47C8C7D653B3"
+}
+
+
+{
+        "id": "02cc8444-f63c-3125-b4bc-5e8237e322iv",
+        "codigo": "0932",
+        "designacao": "Ivaldir Batalha Produto",
+        "produto_servico": "P",
+        "vendivel": "A",
+        "compravel": "",
+        "preco_custo": 0,
+        "preco_venda": 0,
+        "pr_categoria_id": "6328790f-7060-1307-6853-ac3ba10f0064",
+        "entidade_id": "7d8bf0c0-33a6-1246-7c94-1c96245dfc3a",
+        "glb_user_id": "0b055788-bf3b-b4fb-e28e-0a6d63158f84",
+        "pr_iva_id": "36B46EFB-CBEB-4E1F-97F9-C77D2C79F08C",
+        "pr_iva_compra_id": "B14B2AF5-BA35-465E-A25D-D4FA8D66BCBD",
+        "pr_unidade_id": "C6F795C4-E589-4A03-B596-3A1FD7AED1F3",
+        "dt_registro": "2022-01-04 18:23:08",
+        "dt_alteracao": "2022-01-07 19:23:08",
+        "estado": "A",
+        "desconto_comercial": 0,
+        "foto_perfil": ""
+}

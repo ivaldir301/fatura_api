@@ -1,0 +1,35 @@
+class FaturaVenda:
+    def __init__(self,
+                 id: str = None,
+                 codigo: str = None,
+                 codigo_referencia: str = None,
+                 tipo_fatura: str = None,
+                 receiptTypeCode: str = None,
+                 venda: str = None,
+                 dt_faturacao: str = None,
+                 limit_faturacao: str = None,
+                 dt_vencimento_fatura: str = None,
+                 dt_registo: str = None,
+                 dt_alteracao: str = None,
+                 estado: str = None,
+                 pago: str = None,
+                 desconto_financeiro: float = None,
+                 desconto_comercial: float = None,
+                 valor_fatura: float = None,
+                 valor_pago: float = None,
+                 valor_por_pagar: float = None,
+                 fatura_venda_id: str = None,
+                 termos_condicoes: str = None,
+                 nota: str = None,
+                 entidade_id: str = None,
+                 requisicao: str = None,
+                 estado_pe: str = None,
+                 dfe_enviado: str = None,
+                 motivo_doc_rejeitado: str = None,
+                 motivo_retificacao: str = None,
+                 motivo_retificacao_desc: str = None,
+                 uuid: str = None):
+        
+        self.id = id
+    
+    

@@ -91,6 +91,7 @@ class queryCliente:
                     '{}',
                     '{}');
                     """.format(
+                            self.__id,
                             self.__foto_perfil,
                             self.__codigo,
                             self.__ind_coletivo,
@@ -110,8 +111,7 @@ class queryCliente:
                             self.__is_cliente_validado,
                             self.__pr_enquadramento_id,
                             self.__glb_user_id,
-                            self.__entidade_id,
-                            self.__id)
+                            self.__entidade_id)
 
     def get_all_clients_in_database(self) -> str:
         return "SELECT * FROM cliente;"

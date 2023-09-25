@@ -61,5 +61,5 @@ def test_query_insert_new_client():
     )
      
     dbQueryResults = mysqlDBTest.connect_to_database()
-    assert dbQueryResults == "Query excuted sucessfully, data inserted in database"
+    assert dbQueryResults == "Data inserted sucessfully"
 

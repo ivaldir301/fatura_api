@@ -1,13 +1,14 @@
 from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 from repository.queries.queryCliente import queryCliente
 from repository.queries.queryProduto import queryProduto
+from models.venda.faturaVenda import FaturaVenda
+from utils.generateCodigo import check_if_new_codigo_exists_and_generate_new
+from utils.UUIDGenerator import get_new_uiid
 from models.cliente import Cliente2
 from models.produto import Produto2
-from models.venda.faturaVenda import FaturaVenda
-import http.client
 from fastapi import FastAPI
 from fastapi import Body
-import json
+import http.client
 
 app = FastAPI()
 
@@ -19,9 +20,9 @@ def hello_world(name: str) -> None:
 @app.post("/cliente", status_code=201)
 def create_new_client(cliente: Cliente2 = Body(...)):
     newClientQuery = queryCliente(
-        cliente.id,
+        get_new_uiid(1),
         cliente.foto_perfil,
-        cliente.codigo,
+        check_if_new_codigo_exists_and_generate_new(1),
         cliente.ind_coletivo,
         cliente.designacao,
         cliente.descricao,
@@ -59,10 +60,10 @@ def create_new_client(cliente: Cliente2 = Body(...)):
         return "There was an error"
 
 
-@app.put("/cliente", status_code = 201)
-def update_client_with_id(client: Cliente2 = Body(...)):
+@app.put("/cliente/{id}", status_code = 201)
+def update_client_with_id(id: str, client: Cliente2 = Body(...)):
     queryClientTest = queryCliente(
-        client.id,
+        id,
         client.foto_perfil,
         client.codigo,
         client.ind_coletivo,
@@ -124,8 +125,8 @@ def delete_client_with_id(id: str):
 @app.post("/produto")
 def create_new_product(product: Produto2 = Body(...)) -> None:
     queryProductTest = queryProduto(
-        product.id,
-        product.codigo,
+        get_new_uiid(2),
+        check_if_new_codigo_exists_and_generate_new(2),
         product.designacao,
         product.produto_servico,
         product.vendivel,
@@ -162,10 +163,9 @@ def create_new_product(product: Produto2 = Body(...)) -> None:
         return "There was an error"
 
 
-@app.put("/produto")
-def update_product_with_id(product: Produto2 = Body(...)):
+@app.put("/produto/{id}")
+def update_product_with_id(id: str, product: Produto2 = Body(...)):
     queryProductTest = queryProduto(
-        product.id,
         product.codigo,
         product.designacao,
         product.produto_servico,
@@ -225,35 +225,35 @@ def delete_product_with_id(id: str):
 def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
     conn = http.client.HTTPSConnection("fatura.opentec.cv")
     
-    # transform produtos array into json objects
-    
-    jsonObjectsProducts = []
-    
-    for product in faturaVenda.produtos:
-        jsonObjectsProducts.append(json.dumps(product))
-        
+    faturaProdutosArraySanitazed = ((str(faturaVenda.produtos).replace("ProdutoFaturaVenda", "", len(faturaVenda.produtos))).replace("(", "{", len(faturaVenda.produtos))).replace(")", "}", len(faturaVenda.produtos))
+
     payload = """serie_id:{}
                  data_venda:{}
                  condicoes_pagamento:{}
                  cliente_id:{}
-                 produtos:{}""".format(
-                                    faturaVenda.serie_id,
-                                    faturaVenda.data_venda,
-                                    faturaVenda.condicao_pagamento,
-                                    faturaVenda.cliente_id,
-                                    jsonObjectsProducts,
-                                    faturaVenda.requisicao,
-                                    faturaVenda.desconto_financeiro,
-                                    faturaVenda.nota
-                                )
+                 produtos:{}
+                 requisicao:{}
+                 desconto_financeiro:{}
+                 nota:{}""".format(
+                                faturaVenda.serie_id,
+                                faturaVenda.data_venda,
+                                faturaVenda.condicao_pagamento,
+                                faturaVenda.cliente_id,
+                                faturaProdutosArraySanitazed,
+                                faturaVenda.requisicao,
+                                faturaVenda.desconto_financeiro,
+                                faturaVenda.nota
+                            )
                                       
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Cookie': '_csrf=ac410cbb999a9149a88e8b1f8e76fa45d2b12cb8d865ba3d822d54de6d800b9ba%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22rSDvz6Gq7hxMWmfIX23oruyQvEuQrHnS%22%3B%7D; app-opentec-lab=j6tlei98du7fbtc7siaukhn84r'
     }
     
+    # payload = payload.replace('\t', '')
+    
     print(payload)
     conn.request("POST", "/web/index.php?r=remote-venda/create", payload, headers)
-    # res = conn.getresponse()
-    # data = res.read()
-    # print(data.decode("utf-8"))
+    res = conn.getresponse()
+    data = res.read()
+    print(data)

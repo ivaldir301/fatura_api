@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class ProdutoFaturaVenda(BaseModel):
-    quantidade: int
-    preco_unidade: float
+    produto_id: str
+    qttd: int
+    preco_unid: float
     desc_comercial: int

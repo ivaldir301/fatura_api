@@ -47,7 +47,7 @@ from pydantic import BaseModel
 #         self.entidade_id = entidade_id
 
 class Cliente2(BaseModel):
-    id: str
+    # id: str = None
     foto_perfil: str
     codigo: str
     ind_coletivo: str

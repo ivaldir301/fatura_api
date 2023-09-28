@@ -3,6 +3,6 @@ env
 Data
 .DS_Store
 validations/
-.vscode/
-__pycache__
+.vscode
+__pycache__/
 .pytest_cache

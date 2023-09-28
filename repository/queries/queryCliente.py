@@ -3,7 +3,6 @@ from typing import Union
 class queryCliente:
     def __init__(self,
                 id: str = None,
-                foto_perfil: str = None, 
                 codigo: str = None, 
                 ind_coletivo: str = None, 
                 designacao: str = None,
@@ -25,7 +24,6 @@ class queryCliente:
                 entidade_id: str = None) -> None:
        
         self.__id = id
-        self.__foto_perfil = foto_perfil
         self.__codigo = codigo
         self.__ind_coletivo = ind_coletivo
         self.__designacao = designacao

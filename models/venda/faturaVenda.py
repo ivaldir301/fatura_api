@@ -4,7 +4,8 @@ import sys
 sys.path.insert(1, '/Users/ivaldir/Desktop/coding/ApiFaturacao')
 from models.produtoFaturaVenda import ProdutoFaturaVenda
 
-class FaturaVenda(BaseModel):                 
+class FaturaVenda(BaseModel):    
+        tipoFaturaId: str             
         serie_id: str 
         data_venda: str
         condicao_pagamento: str 

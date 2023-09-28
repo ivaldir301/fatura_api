@@ -1,27 +1,56 @@
 from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.openapi.utils import get_openapi
 from repository.queries.queryCliente import queryCliente
 from repository.queries.queryProduto import queryProduto
 from models.venda.faturaVenda import FaturaVenda
 from utils.generateCodigo import check_if_new_codigo_exists_and_generate_new
 from utils.UUIDGenerator import get_new_uiid
+from fastapi import FastAPI, Body, Depends, HTTPException, status
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from models.cliente import Cliente2
 from models.produto import Produto2
-from fastapi import FastAPI
-from fastapi import Body
 import http.client
+import secrets
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
-@app.get("/{name}")
-def hello_world(name: str) -> None:
+security = HTTPBasic()
+
+# Function for verifying if credentials comming throught http headers are valid 
+# based on fixed data
+def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_username = secrets.compare_digest(credentials.username, "user")
+    correct_password = secrets.compare_digest(credentials.password, "password")
+    if not (correct_username and correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials.username
+
+# Routes to get the documentation for the endpoints, swagger and json types
+@app.get("/test/{name}", tags=["Hello World"])
+def hello_world(name: str = Depends(get_current_username)) -> None:
     return {"Hello my first FastAPI api, the name is {}".format(name)} 
 
+@app.get("/docs")
+async def get_documentation(username: str = Depends(get_current_username)):
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="docs")
 
-@app.post("/cliente", status_code=201)
+
+@app.get("/openapi.json")
+async def openapi(username: str = Depends(get_current_username)):
+    return get_openapi(title = "FastAPI", version="0.1.0", routes=app.routes)
+
+
+# The other endpoints related to clients, products and faturavenda starts here
+
+@app.post("/cliente", status_code=201, tags=["Cliente"])
 def create_new_client(cliente: Cliente2 = Body(...)):
     newClientQuery = queryCliente(
         get_new_uiid(1),
-        cliente.foto_perfil,
         check_if_new_codigo_exists_and_generate_new(1),
         cliente.ind_coletivo,
         cliente.designacao,
@@ -60,11 +89,10 @@ def create_new_client(cliente: Cliente2 = Body(...)):
         return "There was an error"
 
 
-@app.put("/cliente/{id}", status_code = 201)
+@app.put("/cliente/{id}", status_code = 201, tags=["Cliente"])
 def update_client_with_id(id: str, client: Cliente2 = Body(...)):
     queryClientTest = queryCliente(
         id,
-        client.foto_perfil,
         client.codigo,
         client.ind_coletivo,
         client.designacao,
@@ -102,7 +130,7 @@ def update_client_with_id(id: str, client: Cliente2 = Body(...)):
         return "there was an error"
 
 
-@app.delete("/cliente/{id}")
+@app.delete("/cliente/{id}", tags=["Cliente"])
 def delete_client_with_id(id: str):
     queryClientTest = queryCliente(id)
     
@@ -122,7 +150,7 @@ def delete_client_with_id(id: str):
         return "there was an error"
 
 
-@app.post("/produto")
+@app.post("/produto", tags=["Produto"])
 def create_new_product(product: Produto2 = Body(...)) -> None:
     queryProductTest = queryProduto(
         get_new_uiid(2),
@@ -163,7 +191,7 @@ def create_new_product(product: Produto2 = Body(...)) -> None:
         return "There was an error"
 
 
-@app.put("/produto/{id}")
+@app.put("/produto/{id}", tags=["Produto"])
 def update_product_with_id(id: str, product: Produto2 = Body(...)):
     queryProductTest = queryProduto(
         product.codigo,
@@ -202,7 +230,7 @@ def update_product_with_id(id: str, product: Produto2 = Body(...)):
         return "there was an error"
 
 
-@app.delete("/produto/{id}")
+@app.delete("/produto/{id}", tags=["Produto"])
 def delete_product_with_id(id: str):
     deleteQueryTest = queryProduto(id)
 
@@ -221,20 +249,22 @@ def delete_product_with_id(id: str):
     else:
         return "there was an error"
 
-@app.post("/faturavenda")
+@app.post("/faturavenda", tags=["Fatura Venda"])
 def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
     conn = http.client.HTTPSConnection("fatura.opentec.cv")
     
     faturaProdutosArraySanitazed = ((str(faturaVenda.produtos).replace("ProdutoFaturaVenda", "", len(faturaVenda.produtos))).replace("(", "{", len(faturaVenda.produtos))).replace(")", "}", len(faturaVenda.produtos))
-
-    payload = """serie_id:{}
-                 data_venda:{}
-                 condicoes_pagamento:{}
-                 cliente_id:{}
-                 produtos:{}
-                 requisicao:{}
-                 desconto_financeiro:{}
-                 nota:{}""".format(
+            
+    payload = """tipo_fatura_id={}
+                 serie_id={}
+                 data_venda={}
+                 condicoes_pagamento={}
+                 cliente_id={}
+                 produtos={}
+                 requisicao={}
+                 desconto_financeiro={}
+                 nota={}""".format(
+                                faturaVenda.tipoFaturaId,
                                 faturaVenda.serie_id,
                                 faturaVenda.data_venda,
                                 faturaVenda.condicao_pagamento,
@@ -250,9 +280,6 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...)):
         'Cookie': '_csrf=ac410cbb999a9149a88e8b1f8e76fa45d2b12cb8d865ba3d822d54de6d800b9ba%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22rSDvz6Gq7hxMWmfIX23oruyQvEuQrHnS%22%3B%7D; app-opentec-lab=j6tlei98du7fbtc7siaukhn84r'
     }
     
-    # payload = payload.replace('\t', '')
-    
-    print(payload)
     conn.request("POST", "/web/index.php?r=remote-venda/create", payload, headers)
     res = conn.getresponse()
     data = res.read()

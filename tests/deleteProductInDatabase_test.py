@@ -1,5 +1,5 @@
-from database.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
-from database.queries.queryProduto import queryProduto
+from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
+from repository.queries.queryProduto import queryProduto
 from models.produto import Produto
 
 productTest = Produto("02f3db02-c614-7d36-438f-705c12ac7957")

@@ -1,6 +1,6 @@
 import sys
  
-sys.path.insert(1, '/Users/ivaldir/Desktop/coding/ApiFaturacao')
+sys.path.insert(1, "/Users/ivaldir/Desktop/coding/ApiFaturacao")
 
 from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 

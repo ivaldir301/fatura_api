@@ -1,4 +1,3 @@
-from typing import Union
 
 class queryCliente:
     def __init__(self,
@@ -14,7 +13,7 @@ class queryCliente:
                 geografia_id: str = None,
                 coordenadas: str = None,
                 endereco: str = None,
-                dt_registro = None,
+                dt_registro: str = None,
                 dt_alteracao = None,
                 estado: str = None,
                 pessoa_contacto: int = None,

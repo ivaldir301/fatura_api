@@ -1,4 +1,4 @@
 from datetime import datetime
 
-def generateDateTimeInFormat() -> None:
+def generateDateTimeInFormat() -> str:
     return datetime.today().strftime('%Y-%m-%d %H:%M:%S')

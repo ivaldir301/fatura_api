@@ -27,9 +27,7 @@ class DatabaseConnectorAndQuery:
             cursor = database_connection.cursor()
             
             result = None
-            
-            #print(self.__query)
-            
+                        
             if self.__queryType == 0:
                 cursor.execute(self.__query)
                 return "Data inserted sucessfully"
@@ -58,6 +56,3 @@ class DatabaseConnectorAndQuery:
         except Error as DatabaseConnectionError:
             print("There's was a problem when connectin to the database", DatabaseConnectionError)
             
-
-
-

@@ -1,7 +1,6 @@
 from pydantic import BaseModel
          
 class Produto2(BaseModel):
-    # id: str
     codigo: str 
     designacao: str 
     produto_servico: str 
@@ -16,7 +15,7 @@ class Produto2(BaseModel):
     pr_iva_compra_id: str 
     pr_unidade_id: str 
     dt_registro: str
-    dt_alteracao: str
+    dt_alteracao: str 
     estado: str 
     desconto_comercial: float
     foto_perfil: str         

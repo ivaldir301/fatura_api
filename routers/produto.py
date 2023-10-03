@@ -33,7 +33,7 @@ def create_new_product(product: Produto2 = Body(...), username: str = Depends(ch
         product.pr_iva_compra_id,
         product.pr_unidade_id,
         generateDateTimeInFormat(),
-        product.dt_alteracao,
+        generateDateTimeInFormat(),
         product.estado,
         product.desconto_comercial,
         product.foto_perfil
@@ -45,7 +45,7 @@ def create_new_product(product: Produto2 = Body(...), username: str = Depends(ch
                 'root',
                 '',
                 queryProductTest.insert_new_product_in_database(),
-                2
+                0
     )
     
     dbQueryResults = mysqlDBTest.connect_to_database()
@@ -67,6 +67,7 @@ def create_new_product(product: Produto2 = Body(...), username: str = Depends(ch
 @router.put("/produto/{id}", tags=["Produto"])
 def update_product_with_id(id: str, product: Produto2 = Body(...), username: str = Depends(check_entity_credencials)):
     queryProductTest = queryProduto(
+        id,
         product.codigo,
         product.designacao,
         product.produto_servico,
@@ -133,7 +134,7 @@ def delete_product_with_id(id: str, username: str = Depends(check_entity_credenc
             )
     else:
         raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Operação não completa devido a um erro",
                 headers={"WWW-Authenticate": "Basic"},
             )

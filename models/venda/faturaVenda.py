@@ -8,7 +8,7 @@ class FaturaVenda(BaseModel):
         tipoFaturaId: str             
         serie_id: str 
         data_venda: str
-        condicao_pagamento: str 
+        condicoes_pagamento: str 
         cliente_id: str
         produtos: list[ProdutoFaturaVenda] 
         requisicao: str 

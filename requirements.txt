@@ -2,6 +2,6 @@ fastapi==1.103.1
 uvicorn==0.23.2
 pydantic==2.3.0
 pytest==7.4.2
-mysql-connector==8.1.0
+mysql-connector==2.2.9
 passlib==1.7.4
 bcrypt==4.0.1

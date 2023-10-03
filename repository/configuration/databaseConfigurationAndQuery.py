@@ -27,7 +27,7 @@ class DatabaseConnectorAndQuery:
             cursor = database_connection.cursor()
             
             result = None
-                        
+                                    
             if self.__queryType == 0:
                 cursor.execute(self.__query)
                 return "Data inserted sucessfully"

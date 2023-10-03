@@ -47,7 +47,6 @@ class queryCliente:
     def insert_new_client_in_database(self) -> str:
         return """
                 INSERT INTO `cliente`(`ID`,
-                    `FOTO_PERFIL`,
                     `CODIGO`,
                     `IND_COLETIVO`,
                     `DESIG`, 
@@ -60,7 +59,6 @@ class queryCliente:
                     `COORDENADAS`,
                     `ENDERECO`,
                     `DT_REGISTO`,
-                    `DT_ALTERACAO`,
                     `ESTADO`,
                     `PESSOA_CONTACTO`,
                     `IS_CLIETE_VALIDADO`,
@@ -84,12 +82,9 @@ class queryCliente:
                     '{}',
                     '{}',
                     '{}',
-                    '{}',
-                    '{}',
                     '{}');
                     """.format(
                             self.__id,
-                            self.__foto_perfil,
                             self.__codigo,
                             self.__ind_coletivo,
                             self.__designacao,
@@ -102,7 +97,6 @@ class queryCliente:
                             self.__coordenadas,
                             self.__endereco,
                             self.__dt_registro,
-                            self.__dt_alteracao,
                             self.__estado,
                             self.__pessoa_contacto,
                             self.__is_cliente_validado,
@@ -121,8 +115,7 @@ class queryCliente:
     def update_client_with_id(self) -> str:
         return """
                 UPDATE cliente SET 
-                    `FOTO_PERFIL`='{}',
-                    `CODIGO`='{}',
+                    `codigo`='{}',
                     `IND_COLETIVO`='{}',
                     `DESIG`='{}',
                     `DESCR`='{}',
@@ -142,8 +135,7 @@ class queryCliente:
                     `glb_user_ID`='{}',
                     `Entidade_ID`='{}'
             WHERE ID = '{}'
-            """.format(self.__foto_perfil,
-                       self.__codigo,
+            """.format(self.__codigo,
                        self.__ind_coletivo,
                        self.__designacao,
                        self.__descricao,

@@ -30,7 +30,7 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
         cliente.coordenadas,
         cliente.endereco,
         generateDateTimeInFormat(),
-        cliente.dt_alteracao,
+        generateDateTimeInFormat(),
         cliente.estado,
         cliente.pessoa_contacto,
         cliente.is_cliente_validado,
@@ -52,8 +52,8 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
     
     if dbQueryResults == "Data inserted sucessfully":
         raise HTTPException(
-                status_code=status.HTTP_202_ACCEPTED,
-                detail="Operação não completa devido a um erro",
+                status_code=status.HTTP_201_CREATED,
+                detail="Operação bem sucedida",
                 headers={"WWW-Authenticate": "Basic"},
             )
     else:

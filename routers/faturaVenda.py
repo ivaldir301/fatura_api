@@ -38,7 +38,3 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...), username: str = D
                 headers={"WWW-Authenticate": "Basic"},
             )
     
-    
-       
-    
-    

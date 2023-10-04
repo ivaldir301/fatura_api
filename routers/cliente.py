@@ -12,6 +12,11 @@ from utils.dateTimeFormatGenerator import generateDateTimeInFormat
 
 from fastapi import Body, APIRouter, Depends, HTTPException, status
 
+from os import environ as env
+from dotenv import load_dotenv
+
+load_dotenv()
+
 router = APIRouter()
 
 @router.post("/cliente", status_code=201, tags=["Cliente"])
@@ -40,10 +45,11 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
     )
     
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '62.171.139.24',
-                'faturacao',
-                'phpmyadmin',
-                'Opentec20202019aaeio##',
+                env['DATABASE_IP_ADRESS'],
+                env['DATABASE_PORT'],
+                env["DATABASE_NAME"],
+                env['DATABASE_USER_NAME'],
+                env['DATABASE_PASSWORD'],
                 newClientQuery.insert_new_client_in_database(),
                 0
     )
@@ -90,10 +96,11 @@ def update_client_with_id(id: str, client: Cliente2 = Body(...), username: str =
     )
 
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '127.0.0.1',
-                'faturacao',
-                'root',
-                '',
+                env['DATABASE_IP_ADRESS'],
+                env['DATABASE_PORT'],
+                env["DATABASE_NAME"],
+                env['DATABASE_USER_NAME'],
+                env['DATABASE_PASSWORD'],
                 queryClientTest.update_client_with_id(),
                 3
     )
@@ -118,10 +125,11 @@ def delete_client_with_id(id: str, username: str = Depends(check_entity_credenci
     queryClientTest = queryCliente(id)
     
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '127.0.0.1',
-                'faturacao',
-                'root',
-                '',
+                env['DATABASE_IP_ADRESS'],
+                env['DATABASE_PORT'],
+                env["DATABASE_NAME"],
+                env['DATABASE_USER_NAME'],
+                env['DATABASE_PASSWORD'],
                 queryClientTest.delete_client_with_id(),
                 4
     )

@@ -6,7 +6,6 @@ from fastapi.security import HTTPBasicCredentials, HTTPBasic
 from fastapi import Depends, HTTPException, status
 from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 from utils.hasher import verifyHash
-import os
 
 from os import environ as env
 from dotenv import load_dotenv
@@ -14,7 +13,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 security = HTTPBasic()
-
 
 def check_entity_credencials(credentials: HTTPBasicCredentials = Depends(security)):    
     correctEntityId = check_entity_id_in_db(credentials.username)

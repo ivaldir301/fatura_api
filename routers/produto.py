@@ -12,6 +12,10 @@ from utils.generateCodigo import check_if_new_codigo_exists_and_generate_new
 from utils.UUIDGenerator import get_new_uiid
 
 from fastapi import Body, APIRouter, Depends, HTTPException, status
+from os import environ as env
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter()
 
@@ -40,10 +44,11 @@ def create_new_product(product: Produto2 = Body(...), username: str = Depends(ch
     )
     
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '127.0.0.1',
-                'faturacao',
-                'root',
-                '',
+                env['DATABASE_IP_ADRESS'],
+                env['DATABASE_PORT'],
+                env["DATABASE_NAME"],
+                env['DATABASE_USER_NAME'],
+                env['DATABASE_PASSWORD'],
                 queryProductTest.insert_new_product_in_database(),
                 0
     )
@@ -89,10 +94,11 @@ def update_product_with_id(id: str, product: Produto2 = Body(...), username: str
     )
     
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '127.0.0.1',
-                'faturacao',
-                'root',
-                '',
+                env['DATABASE_IP_ADRESS'],
+                env['DATABASE_PORT'],
+                env["DATABASE_NAME"],
+                env['DATABASE_USER_NAME'],
+                env['DATABASE_PASSWORD'],
                 queryProductTest.update_product_with_id(),
                 3
     )
@@ -117,10 +123,11 @@ def delete_product_with_id(id: str, username: str = Depends(check_entity_credenc
     deleteQueryTest = queryProduto(id)
 
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '127.0.0.1',
-                'faturacao',
-                'root',
-                '',
+                env['DATABASE_IP_ADRESS'],
+                env['DATABASE_PORT'],
+                env["DATABASE_NAME"],
+                env['DATABASE_USER_NAME'],
+                env['DATABASE_PASSWORD'],
                 deleteQueryTest.delete_product_with_id(),
                 4
     )

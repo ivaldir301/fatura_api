@@ -25,20 +25,20 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...), username: str = D
         conn.request("POST", "/web/index.php?r=remote-venda/create", faturaVendaJson, headers)
         res = conn.getresponse()
         data = res.read()
-        if str(data).find("false"):
-            raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Operação não completa devido a um erro",
-                    headers={"WWW-Authenticate": "Basic"},
-            )
-        elif str(data).find("true"):     
-            raise HTTPException(
-                    status_code=status.HTTP_202_ACCEPTED,
-                    detail="Operação bem sucedida",
-                    headers={"WWW-Authenticate": "Basic"},
-            )
     except Exception as e:
-        print(e)
+        raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Dados enviados estão num formato inválido",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+        
+    raise HTTPException(
+                status_code=status.HTTP_201_CREATED,
+                detail="Operação realizada com sucesso",
+                headers={"WWW-Authenticate": "Basic"},
+            )
+    
+    
        
     
     

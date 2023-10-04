@@ -4,18 +4,13 @@ from fastapi.openapi.utils import get_openapi
 from authentication.autoDocumentationAuthentication import check_entity_credencials
 from fastapi import Depends
 
-from routers import cliente, produto, faturaVenda, autoDocumentation
+from routers import cliente, produto, faturaVenda
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 app.include_router(cliente.router)
 app.include_router(produto.router)
 app.include_router(faturaVenda.router)
-
-
-@app.get("/test", tags=["Hello World"])
-def hello_world() -> None:
-    return {"Hello my first FastAPI api"} 
 
 
 @app.get("/docs")

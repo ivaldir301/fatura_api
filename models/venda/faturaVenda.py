@@ -15,14 +15,3 @@ class FaturaVenda(BaseModel):
         desconto_financeiro: float 
         nota: str 
 
-
-# test = FaturaVenda(serie_id = "fdsafsd",
-#                    produtos=[{"quantidade":10, "preco_unidade": 1000, "desc_comercial": 10},
-#                              {"quantidade":15, "preco_unidade": 1500, "desc_comercial": 20}
-#                              ]
-# )
-
-
-# print(vars(test))
-
-    

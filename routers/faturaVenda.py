@@ -1,7 +1,7 @@
 import sys
 from authentication.autoDocumentationAuthentication import check_entity_credencials
 
-sys.path.insert(1, "/Users/ivaldir/Desktop/coding/ApiFaturacao")
+sys.path.insert(1, "/Users/ivaldir/Desktop/coding/ApiFaturacao-Producao")
 
 from models.venda.faturaVenda import FaturaVenda
 import http.client
@@ -15,29 +15,6 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...), username: str = D
     conn = http.client.HTTPSConnection("fatura.opentec.cv")
     
     faturaVendaJson = json.dumps(faturaVenda ,default=lambda o:  o.__dict__, sort_keys=False, indent=4)
-    print(faturaVendaJson)
-    
-    # faturaProdutosArraySanitazed = ((str(faturaVenda.produtos).replace("ProdutoFaturaVenda", "", len(faturaVenda.produtos))).replace("(", "{", len(faturaVenda.produtos))).replace(")", "}", len(faturaVenda.produtos))
-            
-    # payload = """tipoFaturaId:{}
-    #              serie_id:{}
-    #              data_venda:{}
-    #              condicoes_pagamento:{}
-    #              cliente_id:{}
-    #              produtos:{}
-    #              requisicao:{}
-    #              desconto_financeiro:{}
-    #              nota:{}""".format(
-    #                             faturaVenda.tipoFaturaId,
-    #                             faturaVenda.serie_id,
-    #                             faturaVenda.data_venda,
-    #                             faturaVenda.condicoes_pagamento,
-    #                             faturaVenda.cliente_id,
-    #                             faturaProdutosArraySanitazed,
-    #                             faturaVenda.requisicao,
-    #                             faturaVenda.desconto_financeiro,
-    #                             faturaVenda.nota
-    #                         )
     
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -48,7 +25,6 @@ def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...), username: str = D
         conn.request("POST", "/web/index.php?r=remote-venda/create", faturaVendaJson, headers)
         res = conn.getresponse()
         data = res.read()
-        print(data)
         if str(data).find("false"):
             raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,

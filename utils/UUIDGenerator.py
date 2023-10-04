@@ -32,4 +32,3 @@ def get_new_uiid(uiidUseType: int) -> str:
     else:
         return newUiid
     
-# print(get_new_uiid(1))

@@ -40,10 +40,10 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
     )
     
     mysqlDBTest = DatabaseConnectorAndQuery(
-                '127.0.0.1',
+                '62.171.139.24',
                 'faturacao',
-                'root',
-                '',
+                'phpmyadmin',
+                'Opentec20202019aaeio##',
                 newClientQuery.insert_new_client_in_database(),
                 0
     )

@@ -2,8 +2,9 @@ import mysql.connector
 from mysql.connector import Error
 
 class DatabaseConnectorAndQuery:
-    def __init__(self, host_name: str, database_name: str, user: str, password:str, query:str, queryType: int) -> None:
+    def __init__(self, host_name: str, port: str, database_name: str, user: str, password:str, query:str, queryType: int) -> None:
         self.__host_name = host_name
+        self.__port = port
         self.__user = user
         self.__password = password
         self.__database_name = database_name
@@ -14,6 +15,7 @@ class DatabaseConnectorAndQuery:
         try:
             database_connection = mysql.connector.connect(
                 host = self.__host_name,
+                port = self.__port,
                 database = self.__database_name,
                 user = self.__user,
                 password = self.__password,
@@ -51,8 +53,7 @@ class DatabaseConnectorAndQuery:
                 return result
             
             print("Connection to database was closed!")
-            
-                
+             
         except Error as DatabaseConnectionError:
             print("There's was a problem when connectin to the database", DatabaseConnectionError)
             

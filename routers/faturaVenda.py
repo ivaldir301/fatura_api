@@ -10,7 +10,7 @@ from fastapi import Body, APIRouter, Depends, HTTPException, status
 
 router = APIRouter() 
 
-@router.post("/faturavenda", tags=["Fatura Venda"])
+@router.post("/faturavenda", tags=["Faturação"])
 def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...), username: str = Depends(check_entity_credencials)):
     conn = http.client.HTTPSConnection("fatura.opentec.cv")
     

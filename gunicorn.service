@@ -1,0 +1,13 @@
+[Unit]
+Description=CVFatuta's integration api
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/app/src
+Environment="PATH=/home/app/venv/bin"
+ExecStart=home/app/venv/bin/gunicorn -w 2 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
+
+[Install]
+WantedBy=multi-user.target

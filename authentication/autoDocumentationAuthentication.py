@@ -16,7 +16,7 @@ security = HTTPBasic()
 
 def check_entity_credencials(credentials: HTTPBasicCredentials = Depends(security)):    
     correctEntityEmail = check_entity_email_in_db(credentials.username)
-    correct_password = check_entity_password_in_db(correctEntityId)
+    correct_password = check_entity_password_in_db(credentials.password)
             
     if correctEntityEmail != None and correct_password != None:
         if verifyHash(credentials.password, correct_password):

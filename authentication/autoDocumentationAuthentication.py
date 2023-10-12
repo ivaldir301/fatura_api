@@ -30,7 +30,7 @@ def check_entity_credencials(credentials: HTTPBasicCredentials = Depends(securit
             
 
 def check_entity_id_in_db(entity_id: str):
-    query = "SELECT (ID) FROM entidade WHERE email = '{}';".format(entity_id)
+    query = "SELECT (ID) FROM entidade WHERE email = '{}'".format(entity_id)
     
     getId = DatabaseConnectorAndQuery(
         env['DATABASE_IP_ADRESS'],

@@ -29,7 +29,7 @@ def check_entity_credencials(credentials: HTTPBasicCredentials = Depends(securit
             )
             
 
-def check_entity_email_in_db(entity_id: str):
+def check_entity_email_in_db(entity_email: str):
     query = "SELECT (email) FROM entidade WHERE email = '{}'".format(entity_email)
     
     getEmail = DatabaseConnectorAndQuery(

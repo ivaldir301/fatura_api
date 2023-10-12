@@ -15,24 +15,24 @@ load_dotenv()
 security = HTTPBasic()
 
 def check_entity_credencials(credentials: HTTPBasicCredentials = Depends(security)):    
-    correctEntityId = check_entity_id_in_db(credentials.username)
+    correctEntityEmail = check_entity_email_in_db(credentials.username)
     correct_password = check_entity_password_in_db(correctEntityId)
             
-    if correctEntityId != None and correct_password != None:
+    if correctEntityEmail != None and correct_password != None:
         if verifyHash(credentials.password, correct_password):
             return credentials.username
         else: 
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="ID da entidade ou password enviada  está incorrecta",
+                detail="Dados enviados incorrectos",
                 headers={"WWW-Authenticate": "Basic"},
             )
             
 
-def check_entity_id_in_db(entity_id: str):
-    query = "SELECT (ID) FROM entidade WHERE email = '{}'".format(entity_id)
+def check_entity_email_in_db(entity_id: str):
+    query = "SELECT (email) FROM entidade WHERE email = '{}'".format(entity_email)
     
-    getId = DatabaseConnectorAndQuery(
+    getEmail = DatabaseConnectorAndQuery(
         env['DATABASE_IP_ADRESS'],
         env['DATABASE_PORT'],
         env["DATABASE_NAME"],
@@ -42,17 +42,17 @@ def check_entity_id_in_db(entity_id: str):
         2
     )
     
-    entity_id = getId.connect_to_database()
+    entity_email = getEmail.connect_to_database()
     
-    entity_id = (((str(entity_id).replace("'", "", 2)).replace('(', '', 2)).replace(')', '', 2)).replace(',', '', 2)
+    entity_email = (((str(entity_email).replace("'", "", 2)).replace('(', '', 2)).replace(')', '', 2)).replace(',', '', 2)
     
-    if entity_id is None:
+    if entity_email is None:
         return None
     else:
-        return entity_id
+        return entity_email
 
-def check_entity_password_in_db(id: str):
-    query = "SELECT (API_ACCESS_CODE) FROM entidade WHERE ID = '{}';".format(id)
+def check_entity_password_in_db(email: str):
+    query = "SELECT (API_ACCESS_CODE) FROM entidade WHERE email = '{}';".format(email)
     
     getPassword = DatabaseConnectorAndQuery(
         env['DATABASE_IP_ADRESS'],

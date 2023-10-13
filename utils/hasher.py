@@ -10,6 +10,6 @@ def verifyHash(plainString: str, hashedString) -> bool:
     try:
         response = pwd_context.verify(plainString, hashedString)
     except:
-        print("Error occurred")
+        print("The two strings are not equal")
         
     return response

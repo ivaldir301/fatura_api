@@ -1,6 +1,6 @@
 import sys
  
-sys.path.insert(1, "/Users/ivaldir/Desktop/coding/ApiFaturacao")
+sys.path.insert(1, "C:/Users/USER/Documents/faturacv")
 
 from repository.configuration.databaseConfigurationAndQuery import DatabaseConnectorAndQuery
 from os import environ as env
@@ -23,14 +23,12 @@ def check_if_new_codigo_exists_and_generate_new(codigoUseType: int) -> str:
                 queryMaiorCodigoNaBaseDeDados,
                 1
     )
-    
-    result = mysqlDBTest.connect_to_database()
-    
     defaultCode = "0"
 
-    if result != None:
-        sanitazedResult = (((((str(result[0]).replace('(', '', 1))).replace(')', '', 1)).replace(',', '', 1)).replace("'", '', 2))
+    result = (((((((str(mysqlDBTest.connect_to_database())).replace('(', '', 1)).replace(')', '', 1)).replace(',', '', 1)).replace("'", '', 2)).replace('[', '', 1)).replace(']', '', 1))
+    if result != "None":
+        return str(int(result) + 1).zfill(5) 
     else:
-        return defaultCode 
-    return str(int(sanitazedResult) + 1).zfill(5) 
+        return defaultCode
+
 

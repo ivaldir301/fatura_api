@@ -21,8 +21,10 @@ router = APIRouter()
 
 @router.post("/cliente", status_code=201, tags=["Cliente"])
 def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
+    newClientUUID = get_new_uiid(1)
+
     newClientQuery = queryCliente(
-        get_new_uiid(1),
+        newClientUUID,
         check_if_new_codigo_exists_and_generate_new(1),
         cliente.ind_coletivo,
         cliente.designacao,
@@ -59,7 +61,7 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
     if dbQueryResults == "Data inserted sucessfully":
         raise HTTPException(
                 status_code=status.HTTP_201_CREATED,
-                detail="Operação bem sucedida",
+                detail=newClientUUID,
                 headers={"WWW-Authenticate": "Basic"},
             )
     else:

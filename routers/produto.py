@@ -21,8 +21,10 @@ router = APIRouter()
 
 @router.post("/produto", tags=["Produto"])
 def create_new_product(product: Produto2 = Body(...), username: str = Depends(check_entity_credencials)) -> None:
+    newClientUUID = get_new_uiid(2)
+
     queryProductTest = queryProduto(
-        get_new_uiid(2),
+        newClientUUID,
         check_if_new_codigo_exists_and_generate_new(2),
         product.designacao,
         product.produto_servico,
@@ -58,7 +60,7 @@ def create_new_product(product: Produto2 = Body(...), username: str = Depends(ch
     if dbQueryResults == "Data inserted sucessfully":
         raise HTTPException(
                 status_code=status.HTTP_202_ACCEPTED,
-                detail="Operação bem sucedida",
+                detail=newClientUUID,
                 headers={"WWW-Authenticate": "Basic"},
             )
     else:

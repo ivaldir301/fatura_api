@@ -19,9 +19,17 @@ load_dotenv()
 
 router = APIRouter()
 
+def show_client_entid(client: str):
+    print(client)
+
 @router.post("/cliente", status_code=201, tags=["Cliente"])
 def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
     newClientUUID = get_new_uiid(1)
+    
+    show_client_entid("\n" + cliente.pessoa_contacto + " here's the data" + "\n")
+    
+    # for dados in cliente:
+    #     print(dados)
 
     newClientQuery = queryCliente(
         newClientUUID,
@@ -34,17 +42,12 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
         cliente.email,
         cliente.telefone,
         cliente.geografia_id,
-        cliente.coordenadas,
         cliente.endereco,
         generateDateTimeInFormat(),
-        generateDateTimeInFormat(),
-        cliente.estado,
         cliente.pessoa_contacto,
-        cliente.is_cliente_validado,
-        cliente.pr_enquadramento_id,
-        cliente.glb_user_id,
         cliente.entidade_id
     )
+    
     
     mysqlDBTest = DatabaseConnectorAndQuery(
                 env['DATABASE_IP_ADRESS'],
@@ -59,11 +62,14 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
     dbQueryResults = mysqlDBTest.connect_to_database()
     
     if dbQueryResults == "Data inserted sucessfully":
-        raise HTTPException(
-                status_code=status.HTTP_201_CREATED,
-                detail=newClientUUID,
-                headers={"WWW-Authenticate": "Basic"},
-            )
+        return {
+            "success": True,
+            "msg": "Cliente criado com sucesso",
+            "data": {
+                "codigo": cliente.codigo,
+                "id": cliente.id
+            }
+        }
     else:
         raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -72,11 +78,10 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
             )
 
 
-@router.put("/cliente/{id}", status_code = 201, tags=["Cliente"])
-def update_client_with_id(id: str, client: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
+@router.put("/cliente/{codigo}", status_code = 201, tags=["Cliente"])
+def update_client_with_codigo(codigo: str, client: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
     queryClientTest = queryCliente(
-        id,
-        client.codigo,
+        codigo,
         client.ind_coletivo,
         client.designacao,
         client.descricao,
@@ -85,16 +90,9 @@ def update_client_with_id(id: str, client: Cliente2 = Body(...), username: str =
         client.email,
         client.telefone,
         client.geografia_id,
-        client.coordenadas,
         client.endereco,
-        client.dt_registro,
         generateDateTimeInFormat(),
-        client.estado,
         client.pessoa_contacto,
-        client.is_cliente_validado,
-        client.pr_enquadramento_id,
-        client.glb_user_id,
-        client.entidade_id
     )
 
     mysqlDBTest = DatabaseConnectorAndQuery(
@@ -103,17 +101,21 @@ def update_client_with_id(id: str, client: Cliente2 = Body(...), username: str =
                 env["DATABASE_NAME"],
                 env['DATABASE_USER_NAME'],
                 env['DATABASE_PASSWORD'],
-                queryClientTest.update_client_with_id(),
+                queryClientTest.update_client_with_codigo(codigo),
                 3
     )
     
     dbQueryResults = mysqlDBTest.connect_to_database()
     if dbQueryResults ==  "Data updated sucessfully":
-        raise HTTPException(
-                status_code=status.HTTP_202_ACCEPTED,
-                detail="Operação bem sucedida",
-                headers={"WWW-Authenticate": "Basic"},
-            )
+        return {
+            "success": True,
+            "msg": "Cliente atualizado com sucesso",
+            "data": {
+                "codigo": client.codigo,
+                "id": client.id
+            }
+        }
+            
     else:
         raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -122,9 +124,9 @@ def update_client_with_id(id: str, client: Cliente2 = Body(...), username: str =
             )
 
 
-@router.delete("/cliente/{id}", tags=["Cliente"])
-def delete_client_with_id(id: str, username: str = Depends(check_entity_credencials)):
-    queryClientTest = queryCliente(id)
+@router.delete("/cliente/{codigo}", tags=["Cliente"])
+def delete_client_with_codigo(codigo: str, username: str = Depends(check_entity_credencials)):
+    queryClientTest = queryCliente()
     
     mysqlDBTest = DatabaseConnectorAndQuery(
                 env['DATABASE_IP_ADRESS'],
@@ -132,17 +134,17 @@ def delete_client_with_id(id: str, username: str = Depends(check_entity_credenci
                 env["DATABASE_NAME"],
                 env['DATABASE_USER_NAME'],
                 env['DATABASE_PASSWORD'],
-                queryClientTest.delete_client_with_id(),
+                queryClientTest.delete_client_with_codigo(codigo),
                 4
     )
     
     dbQueryResults = mysqlDBTest.connect_to_database()
     if dbQueryResults == "Data deleted sucessfully":
-        raise HTTPException(
-                status_code=status.HTTP_202_ACCEPTED,
-                detail="Operação bem sucedida",
-                headers={"WWW-Authenticate": "Basic"},
-            )
+        return {
+            "success": True,
+            "msg": "Cliente eliminado com sucesso",
+            "data": {}
+        }
     else:
         raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

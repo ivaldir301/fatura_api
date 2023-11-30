@@ -28,6 +28,8 @@ class DatabaseConnectorAndQuery:
                             
             cursor = database_connection.cursor()
             
+            print(self.__query)
+            
             result = None
                                     
             if self.__queryType == 0:

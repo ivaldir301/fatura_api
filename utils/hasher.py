@@ -7,9 +7,11 @@ def hashString(word: str) -> str:
 
 def verifyHash(plainString: str, hashedString) -> bool:
     response = None
+    print(plainString, hashedString)
     try:
         response = pwd_context.verify(plainString, hashedString)
     except:
         print("The two strings are not equal")
+        return False
         
-    return response
+    return True

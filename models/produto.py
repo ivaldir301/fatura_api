@@ -1,23 +1,15 @@
 from pydantic import BaseModel
          
 class Produto2(BaseModel):
-    codigo: str 
     designacao: str 
+    descricao: str
     produto_servico: str 
-    vendivel: str 
-    compravel: str 
+    vendivel: str  
     preco_custo: float 
     preco_venda: float 
-    pr_categoria_id: str 
+    pr_categoria_codigo: str 
     entidade_id: str 
-    glb_user_id: str 
-    pr_iva_id: str 
-    pr_iva_compra_id: str 
-    pr_unidade_id: str 
-    dt_registro: str
-    dt_alteracao: str 
-    estado: str 
-    desconto_comercial: float
-    foto_perfil: str         
+    pr_iva_codigo: str 
+    pr_unidade_codigo: str   
         
    

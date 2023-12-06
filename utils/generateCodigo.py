@@ -31,4 +31,4 @@ def check_if_new_codigo_exists_and_generate_new(codigoUseType: int) -> str:
     else:
         return defaultCode
 
-
+print(check_if_new_codigo_exists_and_generate_new(1))

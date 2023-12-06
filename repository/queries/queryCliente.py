@@ -1,93 +1,77 @@
-class queryCliente:
-    def __init__(self,
-                id: str = None,
-                codigo: str = None,
-                ind_coletivo: str = None, 
-                designacao: str = None,
-                descricao: str = None, 
-                nif: int = None, 
-                numero_cliente: int = None,
-                email: str = None, 
-                telefone: int = None,
-                geografia_id: str = None,
-                endereco: str = None,
-                dt_registro: str = None,
-                dt_alteracao = None,
-                pessoa_contacto: str = None,
-                entidade_id: str = None) -> None:
-       
-        self.__id = id
-        self.__codigo = codigo
-        self.__ind_coletivo = ind_coletivo
-        self.__designacao = designacao
-        self.__descricao = descricao
-        self.__nif = nif
-        self.__numero_cliente = numero_cliente
-        self.__email = email
-        self.__telefone = telefone
-        self.__geografia_id = geografia_id
-        self.__endereco = endereco
-        self.__dt_registro = dt_registro
-        self.__dt_alteracao = dt_alteracao
-        self.__pessoa_contacto = pessoa_contacto
-        self.__entidade_id = entidade_id
-    
+from models.cliente import Cliente2
 
-    def insert_new_client_in_database(self) -> str:
-        return """
-                INSERT INTO `cliente`(`ID`,
-                    `CODIGO`,
-                    `IND_COLETIVO`,
-                    `DESIG`, 
-                    `DESCR`,
-                    `NIF`,
-                    `NUM_CLIENTE`,
-                    `EMAIL`,
-                    `TELEFONE`,
-                    `GEOGRAFIA_ID`,
-                    `ENDERECO`,
-                    `DT_REGISTO`,
-                    `PESSOA_CONTACTO`,
-                    `Entidade_ID`) VALUES (
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}',
-                    '{}');
-                    """.format(
-                            self.__id,
-                            self.__codigo,
-                            self.__ind_coletivo,
-                            self.__designacao,
-                            self.__descricao,
-                            self.__nif,
-                            self.__numero_cliente,
-                            self.__email,
-                            self.__telefone,
-                            self.__geografia_id,
-                            self.__endereco,
-                            self.__dt_registro,
-                            self.__pessoa_contacto,
-                            self.__entidade_id)
+class queryCliente:
+    def __init__(self, cliente: Cliente2 = None) -> None:
+        self.__cliente = cliente
+
+    def insert_new_client_in_database(self, id: str, codigo: str, data_registro: str) -> str:
+        # print(self.__endereco)
+        # print(self.__dt_registro)
+        print(data_registro)
+        print(self.__cliente.pessoa_contacto)
+        print(self.__cliente.entidade_id)
+        
+        query = """
+            INSERT INTO cliente (
+                ID,
+                CODIGO,
+                IND_COLETIVO,
+                DESIG,
+                DESCR,
+                NIF,
+                NUM_CLIENTE,
+                EMAIL,
+                TELEFONE,
+                GEOGRAFIA_ID,
+                ENDERECO,
+                DT_REGISTO,
+                PESSOA_CONTACTO,
+                Entidade_ID
+            ) VALUES (
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                '{}',
+                {},
+                {}
+            );
+        """.format(
+            id,
+            codigo,
+            self.__cliente.ind_coletivo,
+            self.__cliente.designacao,
+            self.__cliente.descricao,
+            self.__cliente.nif,
+            self.__cliente.numero_cliente,
+            self.__cliente.email,
+            self.__cliente.telefone,
+            self.__cliente.geografia_id,
+            self.__cliente.endereco,
+            data_registro,
+            "'{}'".format(self.__cliente.pessoa_contacto) if self.__cliente.pessoa_contacto is not None else 'NULL',
+            "'{}'".format(self.__cliente.entidade_id) if self.__cliente.entidade_id is not None else 'NULL'
+        )
+
+        return query
+
 
     def get_all_clients_in_database(self) -> str:
         return "SELECT * FROM cliente;"
     
-    def get_client_with_id(self):
+    def get_client_with_id(self, id):
         return """
                 SELECT * FROM cliente WHERE id = '{}';
-            """.format(self.__id)
+            """.format(id)
     
-    def update_client_with_codigo(self, codigo) -> str:
+    def update_client_with_codigo(self, codigo: str, data_alteracao: str) -> str:
         return """
                 UPDATE cliente SET 
                     `IND_COLETIVO`='{}',
@@ -101,21 +85,21 @@ class queryCliente:
                     `ENDERECO`='{}',
                     `DT_ALTERACAO`='{}',
                     `PESSOA_CONTACTO`='{}',
-                    'Entidade_ID' = '{}',
-            WHERE CODIGO = '{}'
-            """.format(self.__ind_coletivo,
-                       self.__designacao,
-                       self.__descricao,
-                       self.__nif,
-                       self.__numero_cliente,
-                       self.__email,
-                       self.__telefone,
-                       self.__geografia_id,
-                       self.__endereco,
-                       self.__dt_alteracao,
-                       self.__pessoa_contacto,
-                       self.__entidade_id,
-                       codigo)
+                    `Entidade_ID` = '{}'
+                WHERE CODIGO = '{}';
+            """.format(self.__cliente.ind_coletivo,
+                        self.__cliente.designacao,
+                        self.__cliente.descricao,
+                        self.__cliente.nif,
+                        self.__cliente.numero_cliente,
+                        self.__cliente.email,
+                        self.__cliente.telefone,
+                        self.__cliente.geografia_id,
+                        self.__cliente.endereco,
+                        data_alteracao,
+                        self.__cliente.pessoa_contacto,
+                        self.__cliente.entidade_id,
+                        codigo)
     
     def delete_client_with_codigo(self, codigo: str) -> str:
         return "DELETE FROM cliente WHERE CODIGO = '{}'".format(codigo)

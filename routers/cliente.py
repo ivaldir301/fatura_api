@@ -19,46 +19,26 @@ load_dotenv()
 
 router = APIRouter()
 
-def show_client_entid(client: str):
-    print(client)
-
 @router.post("/cliente", status_code=201, tags=["Cliente"])
 def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
     newClientUUID = get_new_uiid(1)
-    
-    show_client_entid("\n" + cliente.pessoa_contacto + " here's the data" + "\n")
-    
-    # for dados in cliente:
-    #     print(dados)
+    newClientCodigo = check_if_new_codigo_exists_and_generate_new(1)
 
-    newClientQuery = queryCliente(
-        newClientUUID,
-        check_if_new_codigo_exists_and_generate_new(1),
-        cliente.ind_coletivo,
-        cliente.designacao,
-        cliente.descricao,
-        cliente.nif,
-        cliente.numero_cliente,
-        cliente.email,
-        cliente.telefone,
-        cliente.geografia_id,
-        cliente.endereco,
-        generateDateTimeInFormat(),
-        cliente.pessoa_contacto,
-        cliente.entidade_id
-    )
+    newClientQuery = queryCliente(cliente)
     
-    
+    # print(newClientQuery.insert_new_client_in_database(newClientUUID, newClientCodigo, generateDateTimeInFormat()))
+    # print(cliente.pessoa_contacto)
+
     mysqlDBTest = DatabaseConnectorAndQuery(
-                env['DATABASE_IP_ADRESS'],
-                env['DATABASE_PORT'],
-                env["DATABASE_NAME"],
-                env['DATABASE_USER_NAME'],
-                env['DATABASE_PASSWORD'],
-                newClientQuery.insert_new_client_in_database(),
-                0
+        env['DATABASE_IP_ADRESS'],
+        env['DATABASE_PORT'],
+        env["DATABASE_NAME"],
+        env['DATABASE_USER_NAME'],
+        env['DATABASE_PASSWORD'],
+        newClientQuery.insert_new_client_in_database(newClientUUID, newClientCodigo, generateDateTimeInFormat()),
+        0
     )
-     
+    
     dbQueryResults = mysqlDBTest.connect_to_database()
     
     if dbQueryResults == "Data inserted sucessfully":
@@ -66,8 +46,8 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
             "success": True,
             "msg": "Cliente criado com sucesso",
             "data": {
-                "codigo": cliente.codigo,
-                "id": cliente.id
+                "codigo": newClientCodigo,
+                "id": newClientUUID
             }
         }
     else:
@@ -79,21 +59,8 @@ def create_new_client(cliente: Cliente2 = Body(...), username: str = Depends(che
 
 
 @router.put("/cliente/{codigo}", status_code = 201, tags=["Cliente"])
-def update_client_with_codigo(codigo: str, client: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
-    queryClientTest = queryCliente(
-        codigo,
-        client.ind_coletivo,
-        client.designacao,
-        client.descricao,
-        client.nif,
-        client.numero_cliente,
-        client.email,
-        client.telefone,
-        client.geografia_id,
-        client.endereco,
-        generateDateTimeInFormat(),
-        client.pessoa_contacto,
-    )
+def update_client_with_codigo(codigo: str, cliente: Cliente2 = Body(...), username: str = Depends(check_entity_credencials)):
+    newClientQuery = queryCliente(cliente)
 
     mysqlDBTest = DatabaseConnectorAndQuery(
                 env['DATABASE_IP_ADRESS'],
@@ -101,7 +68,7 @@ def update_client_with_codigo(codigo: str, client: Cliente2 = Body(...), usernam
                 env["DATABASE_NAME"],
                 env['DATABASE_USER_NAME'],
                 env['DATABASE_PASSWORD'],
-                queryClientTest.update_client_with_codigo(codigo),
+                newClientQuery.update_client_with_codigo(codigo, generateDateTimeInFormat()),
                 3
     )
     
@@ -111,8 +78,7 @@ def update_client_with_codigo(codigo: str, client: Cliente2 = Body(...), usernam
             "success": True,
             "msg": "Cliente atualizado com sucesso",
             "data": {
-                "codigo": client.codigo,
-                "id": client.id
+                "codigo": codigo,
             }
         }
             

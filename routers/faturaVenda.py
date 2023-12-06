@@ -3,6 +3,7 @@ from authentication.autoDocumentationAuthentication import check_entity_credenci
 
 sys.path.insert(1, "/Users/ivaldir/Desktop/coding/ApiFaturacao-Producao")
 
+from utils.tipoFaturaCodigoToId import tipoFaturaCodigoToId
 from models.venda.faturaVenda import FaturaVenda
 import http.client
 import json
@@ -14,6 +15,7 @@ router = APIRouter()
 def insertNewFaturaVenda(faturaVenda: FaturaVenda = Body(...), username: str = Depends(check_entity_credencials)):
     conn = http.client.HTTPSConnection("fatura.opentec.cv")
     
+    faturaVenda.tipoFaturaId = tipoFaturaCodigoToId(faturaVenda.tipoFaturaId)
     faturaVendaJson = json.dumps(faturaVenda ,default=lambda o:  o.__dict__, sort_keys=False, indent=4)
     
     headers = {

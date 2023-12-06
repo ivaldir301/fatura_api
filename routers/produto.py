@@ -1,5 +1,6 @@
 import sys
 from authentication.autoDocumentationAuthentication import check_entity_credencials
+from utils.codeProductDataToIdTranslator import prIvaCodigoTranslator, prUnidadeCodigoTranslator
 from utils.generateCodigo import check_if_new_codigo_exists_and_generate_new
 
 sys.path.insert(1, "/Users/ivaldir/Desktop/coding/ApiFaturacao")
@@ -24,6 +25,9 @@ router = APIRouter()
 def create_new_product(produto: Produto2 = Body(...), username: str = Depends(check_entity_credencials)) -> None:
     newProductUUID = get_new_uiid(2)
     newProductCodigo = check_if_new_codigo_exists_and_generate_new(2)
+    
+    produto.pr_iva_codigo = prIvaCodigoTranslator(produto.pr_iva_codigo)
+    produto.pr_unidade_codigo = prUnidadeCodigoTranslator(produto.pr_unidade_codigo)
 
     queryProductTest = queryProduto(produto)
     
@@ -58,6 +62,9 @@ def create_new_product(produto: Produto2 = Body(...), username: str = Depends(ch
 
 @router.put("/produto/{codigo}", tags=["Produto"])
 def update_product_with_codigo(codigo: str, produto: Produto2 = Body(...), username: str = Depends(check_entity_credencials)):
+    produto.pr_iva_codigo = prIvaCodigoTranslator(produto.pr_iva_codigo)
+    produto.pr_iva_codigo = prUnidadeCodigoTranslator(produto.pr_unidade_codigo)
+    
     queryProductTest = queryProduto(produto)
     
     mysqlDBTest = DatabaseConnectorAndQuery(

@@ -7,7 +7,6 @@ class Produto2(BaseModel):
     vendivel: str  
     preco_custo: float 
     preco_venda: float 
-    pr_categoria_codigo: str 
     entidade_id: str 
     pr_iva_codigo: str 
     pr_unidade_codigo: str   

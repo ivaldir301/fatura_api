@@ -6,10 +6,8 @@ from models.produtoFaturaVenda import ProdutoFaturaVenda
 
 class FaturaVenda(BaseModel):    
         tipoFaturaId: str             
-        serie_id: str 
-        data_venda: str
         condicoes_pagamento: str 
-        cliente_id: str
+        cliente_codigo: str
         produtos: list[ProdutoFaturaVenda] 
         requisicao: str 
         desconto_financeiro: float 
